@@ -38,8 +38,8 @@ function ResponseWrapper(body, init) {
 
 const isFn = unknown => typeof unknown === 'function'
 
-const normalizeResponse = (bodyOrFunction, init) => () => isFn(bodyOrFunction) ?
-    bodyOrFunction().then(({body, init}) => new ResponseWrapper(body, init)) :
+const normalizeResponse = (bodyOrFunction, init) => (url, args) => isFn(bodyOrFunction) ?
+    bodyOrFunction(url, args).then(({body, init}) => new ResponseWrapper(body, init)) :
     Promise.resolve(new ResponseWrapper(bodyOrFunction, init))
 
 const normalizeError = errorOrFunction =>  isFn(errorOrFunction) ?
